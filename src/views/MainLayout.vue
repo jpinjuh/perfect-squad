@@ -26,9 +26,10 @@ export default {
 
 <style module>
 .main {
-  height: 100vh;
-  background: url("../assets/perfect-squad-bg.jpg");
-  background-repeat: no-repeat;
+  min-height: 100vh;
+  background-image: url("../assets/perfect-squad-bg.jpg");
+  background-repeat: repeat;
+  background-attachment: fixed;
   background-size: cover;
 }
 .content {

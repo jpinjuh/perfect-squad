@@ -5,7 +5,8 @@
         v-for="(position, index) in positions"
         :key="index"
         cols="12"
-        md="3"
+        lg="3"
+        md="6"
         sm="6"
       >
         <v-card
@@ -19,52 +20,38 @@
           {{ position.name }}
         </v-card>
         <v-container px-4 py-0>
-          <v-card
-            v-for="n in position.players"
-            :key="n"
-            elevation="12"
-            class="mb-4 text-center"
-            color="#ebebeb"
-            outlined
-            tile
-          >
-            <v-container py-0 px-2>
-              <v-row class="ma-0" fluid align="center">
-                <v-col class="pa-0 d-flex ">
-                  <v-btn icon>
-                    <v-icon color="#b3b3b3">mdi-heart</v-icon>
-                  </v-btn>
-                </v-col>
-                <v-col cols="6" class="pa-0">
-                  <v-card-text class="pa-0 text-center subtitle-1">
-                    Luka Modrić
-                  </v-card-text>
-                </v-col>
-                <v-col class="pa-0">
-                  <v-card-text class="pa-0 text-right title">
-                    {{ position.name }}
-                  </v-card-text>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card>
+          <v-expansion-panels class="d-block" tile>
+            <Player :position="position" v-for="n in position.players" :key="n" />
+          </v-expansion-panels>
         </v-container>
       </v-col>
+    </v-row>
+    <v-row v-for="player in players" :key="player.name">
+      {{player.name}}
     </v-row>
   </v-container>
 </template>
 
 <script>
+import Player from "@/components/Player.vue";
+
 export default {
   name: "Players",
-  components: {},
+  components: {
+    Player
+  },
   data: () => ({
     positions: [
-      { name: "GK", players: 2 },
-      { name: "DEF", players: 8 },
-      { name: "MID", players: 6 },
-      { name: "ATT", players: 4 }
+      { name: "GK", players: 2, isFavorite: true, color: "#54688e" },
+      { name: "DEF", players: 8, isFavorite: false, color: "#471321" },
+      { name: "MID", players: 6, isFavorite: true, color: "#0b8227" },
+      { name: "ATT", players: 4, isFavorite: false, color: "#cdcf32" }
     ]
-  })
+  }),
+  computed: {
+    players() {
+      return this.$store.getters.players;
+    }
+  },
 };
 </script>

@@ -27,8 +27,12 @@
                 </v-btn>
               </template>
               <v-list dark>
-                <v-list-item v-for="(item, index) in items" :key="index" to="/">
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item
+                  v-for="(formation, index) in formations"
+                  :key="index"
+                  @click="sendData(formation.name)"
+                >
+                  <v-list-item-title>{{ formation.name }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -42,12 +46,23 @@
 <script>
 export default {
   data: () => ({
-    items: [
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me 2" }
+    formations: [
+      { name: "4-4-2" },
+      { name: "4-1-3-2" },
+      { name: "4-3-3" },
+      { name: "4-2-1-3" },
+      { name: "4-2-2-2" },
+      { name: "5-3-2" },
+      { name: "3-3-2-2" }
     ]
-  })
+  }),
+  methods: {
+    sendData(name) {
+      console.log(name);
+      if (this.$route.path !== "/") {
+        this.$router.push("/");
+      }
+    }
+  }
 };
 </script>

@@ -15,6 +15,9 @@ export default {
 
   data: () => ({
     //
-  })
+  }),
+  created() {
+    this.$store.dispatch("getPlayers");
+  }
 };
 </script>
