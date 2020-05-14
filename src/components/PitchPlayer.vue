@@ -1,35 +1,31 @@
 <template>
-  <v-hover v-slot:default="{ hover }" open-delay="100">
-    <div id="position-circle">
-      <v-card
-        v-if="hover"
-        elevation="0"
-        class="d-flex align-center justify-center"
-        id="popover"
-      >
-        <v-dialog v-model="dialog" width="70vw">
-          <template v-slot:activator="{ on }">
-            <v-container v-on="on" pa-0>
-              <v-row class="ma-0">
-                <v-col class="pa-0 d-flex justify-center">
-                  <img
-                    @click="openPopUp($event)"
-                    class="player-img"
-                    :src="link"
-                  />
-                </v-col>
-              </v-row>
-              <v-row class="ma-0">
-                <v-col class="pa-0 d-flex justify-center">
-                  <v-card class="pa-1">Luka Modrić</v-card>
-                </v-col>
-              </v-row>
-            </v-container>
-          </template>
-        </v-dialog>
-      </v-card>
-    </div>
-  </v-hover>
+  <div
+    id="position-circle"
+    @click="
+      $emit('open-popup');
+      openPopUp($event);
+    "
+  >
+    <v-card
+      v-if="isFavoriteExists"
+      elevation="0"
+      class="d-flex align-center justify-center"
+      id="popover"
+    >
+      <v-container pa-0>
+        <v-row class="ma-0">
+          <v-col class="pa-0 d-flex justify-center">
+            <img @click="openPopUp($event)" class="player-img" :src="link" />
+          </v-col>
+        </v-row>
+        <v-row class="ma-0">
+          <v-col class="pa-0 d-flex justify-center">
+            <v-card class="pa-0 body-2">Luka Modrić</v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -39,14 +35,15 @@ export default {
   data: () => ({
     link:
       "https://www.fifaindex.com/static/FIFA20/images/players/10/177003.webp",
-    dialog: false
+    dialog: false,
+    isFavoriteExists: false
   }),
   methods: {
     openPopUp(e) {
       // na hover prikazati sliku koju preko props posaljem iz Home i bindat je za :src
       e.preventDefault();
       e.stopPropagation();
-      console.log("red");
+      console.log(e.target.tagName);
       // na klik dispatch action koja ce pretražiti na osnovu name (pozicija npr. 'CB') sve igrače za tu poziciju i vratiti niz
     }
   }
@@ -56,8 +53,8 @@ export default {
 <style>
 #position-circle {
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background-color: #1f1f1f;
   border: 1px solid red;
@@ -76,8 +73,8 @@ export default {
 
 .player-img {
   background-position: center;
-  width: 90px;
-  height: 90px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   background-size: cover;
   background-color: #b3b3b3;

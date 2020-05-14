@@ -2,7 +2,7 @@
   <v-container pa-0>
     <v-row no-gutters>
       <v-col
-        v-for="(position, index) in positions"
+        v-for="(position, index) in players"
         :key="index"
         cols="12"
         lg="3"
@@ -21,13 +21,15 @@
         </v-card>
         <v-container px-4 py-0>
           <v-expansion-panels class="d-block" tile>
-            <Player :position="position" v-for="n in position.players" :key="n" />
+            <Player
+              v-for="player in position.players"
+              :key="player.id"
+              :player="player"
+              :color="position.color"
+            />
           </v-expansion-panels>
         </v-container>
       </v-col>
-    </v-row>
-    <v-row v-for="player in players" :key="player.name">
-      {{player.name}}
     </v-row>
   </v-container>
 </template>
@@ -41,17 +43,17 @@ export default {
     Player
   },
   data: () => ({
-    positions: [
-      { name: "GK", players: 2, isFavorite: true, color: "#54688e" },
-      { name: "DEF", players: 8, isFavorite: false, color: "#471321" },
-      { name: "MID", players: 6, isFavorite: true, color: "#0b8227" },
-      { name: "ATT", players: 4, isFavorite: false, color: "#cdcf32" }
-    ]
+    //
   }),
   computed: {
     players() {
-      return this.$store.getters.players;
+      return [
+        { name: "GK", players: this.$store.getters.getGks, color: "#54688e" },
+        { name: "DEF", players: this.$store.getters.getDefs, color: "#471321" },
+        { name: "MID", players: this.$store.getters.getMids, color: "#0b8227" },
+        { name: "ATT", players: this.$store.getters.getAtts, color: "#cdcf32" }
+      ];
     }
-  },
+  }
 };
 </script>

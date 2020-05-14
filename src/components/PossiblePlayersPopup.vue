@@ -1,6 +1,6 @@
 <template>
-  <v-container pa-0 fill-height>
-    <v-container pa-0>
+  <div class="possible-players overflow-y-auto">
+    <div>
       <v-row no-gutters>
         <v-col>
           <v-card
@@ -49,7 +49,7 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-container>
+    </div>
     <v-layout>
       <v-expansion-panels
         class="d-block"
@@ -73,23 +73,37 @@
         </v-container>
       </v-expansion-panels>
     </v-layout>
-  </v-container>
+    <div></div>
+    <v-btn
+      color="#b3b3b3"
+      dark
+      fixed
+      large
+      bottom
+      fab
+      :style="{ left: '50%', transform: 'translateX(-50%)' }"
+      @click="$emit('close-popup')"
+    >
+      <v-icon>mdi-close</v-icon>
+    </v-btn>
+  </div>
 </template>
 
 <script>
 import Player from "@/components/Player.vue";
 
 export default {
-  name: "Favorites",
+  name: "App",
   components: {
     Player
   },
+
   data: () => ({
-    positions: [{ name: "GK", players: 2, isFavorite: true, color: "#54688e" }]
+    //
   }),
   computed: {
     players() {
-      return this.$store.getters.players;
+      return this.$store.getters.getByPitchPosition("CF");
     },
     openedPanels() {
       let opened = [];
@@ -101,3 +115,21 @@ export default {
   }
 };
 </script>
+
+<style>
+.possible-players {
+  min-height: 100vh;
+  background-image: url("../assets/perfect-squad-bg.jpg");
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  width: 100vw;
+  background-color: red;
+  position: fixed;
+  margin-top: 65px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+</style>

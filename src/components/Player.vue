@@ -8,26 +8,44 @@
       >
         <v-row class="ma-0" fluid align="center">
           <v-col class="pa-0 d-flex ">
-            <v-btn @click="position.isFavorite = !position.isFavorite" icon>
-              <v-icon :color="position.isFavorite ? 'red' : '#b3b3b3'"
-                >mdi-heart</v-icon
-              >
+            <v-btn @click="method1()" icon>
+              <v-icon>mdi-heart</v-icon>
             </v-btn>
           </v-col>
           <v-col cols="6" class="pa-0">
             <v-card-text class="pa-0 text-center subtitle-1">
-              Luka Modrić
+              {{ player.name }} {{ player.lastName }}
             </v-card-text>
           </v-col>
-          <v-col :style="{ color: position.color }" class="pa-0">
-            <v-card-text class="pa-0 text-right title">
-              {{ position.name }}
+          <v-col class="pa-0">
+            <v-card-text
+              :style="{ color: color }"
+              class="pa-0 text-right title"
+            >
+              {{ player.stats.position }}
             </v-card-text>
           </v-col>
         </v-row>
       </v-expansion-panel-header>
       <v-expansion-panel-content class="pa-0 ma-0">
-        <PlayerDetails />
+        <v-dialog v-model="dialog" width="70vw">
+          <template v-slot:activator="{ on }">
+            <v-card v-on="on" color="#ebebeb" tile class="elevation-0">
+              <v-img :src="player.playerPicture" height="200"></v-img>
+              <v-card-subtitle class="pa-2 body-1">
+                <v-row class="ma-0" fluid align="center">
+                  <img :src="player.teamCrest" />
+                  <span class="ml-2">{{ player.stats.club }}</span>
+                </v-row>
+              </v-card-subtitle>
+            </v-card>
+          </template>
+          <PlayerDetails
+            :color="color"
+            @close-dialog="dialog = false"
+            :id="player.id"
+          />
+        </v-dialog>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </div>
@@ -41,7 +59,15 @@ export default {
   components: {
     PlayerDetails
   },
-  props: ["position"]
+  data: () => ({
+    dialog: false
+  }),
+  methods: {
+    method1() {
+      console.log("something");
+    }
+  },
+  props: ["player", "color"]
 };
 </script>
 
