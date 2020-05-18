@@ -171,8 +171,6 @@ export default {
   components: {},
   data: () => ({
     dialog: false,
-    rating: 0,
-    progressValue: 90,
     player: [],
     playerSkillKeys: [],
     playerSkills: [],
@@ -187,6 +185,7 @@ export default {
       const birthDate = new Date(dateString);
       let age = today.getFullYear() - birthDate.getFullYear();
       const m = today.getMonth() - birthDate.getMonth();
+
       if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
       }
@@ -197,6 +196,7 @@ export default {
     getPopularity() {
       let popularitySum = 0,
         counter = 0;
+
       for (let prop in this.playerSkills) {
         popularitySum += this.playerSkills[prop].popular;
         counter++;
@@ -209,6 +209,7 @@ export default {
     this.player = this.$store.getters.getPlayer(this.id);
     this.playerSkillKeys = Object.keys(this.player.playerSkills);
     const { stats, playerSkills } = this.player;
+
     this.playerSkills = playerSkills;
     this.stats = stats;
   },

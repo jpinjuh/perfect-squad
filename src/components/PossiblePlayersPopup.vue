@@ -51,13 +51,7 @@
       </v-row>
     </div>
     <v-layout>
-      <v-expansion-panels
-        class="d-block"
-        multiple
-        :value="openedPanels"
-        tile
-        readonly
-      >
+      <v-expansion-panels multiple :value="openedPanels" tile readonly>
         <v-container>
           <v-row>
             <v-col
@@ -65,9 +59,9 @@
               sm="6"
               md="3"
               v-for="player in players"
-              :key="player.name"
+              :key="player.id"
             >
-              <Player :player="player" />
+              <Player :player="player" :favorite="isFavorite(player.id)" />
             </v-col>
           </v-row>
         </v-container>
@@ -101,18 +95,31 @@ export default {
   data: () => ({
     //
   }),
+  methods: {
+    isFavorite(id){
+      if(this.favorite){
+        return this.favorite.id === id
+      }
+      return false;
+    }
+  },
   computed: {
     players() {
-      return this.$store.getters.getByPitchPosition("CF");
+      return this.$store.getters.getByPitchPosition(this.popupData.positionName);
+    },
+    favorite() {
+      return this.$store.getters.getFavorite(this.popupData.positionId);
     },
     openedPanels() {
       let opened = [];
+
       for (let i = 0; i < this.players.length; i++) {
         opened.push(i);
       }
       return opened;
     }
-  }
+  },
+  props: ['popupData']
 };
 </script>
 
@@ -124,7 +131,6 @@ export default {
   background-attachment: fixed;
   background-size: cover;
   width: 100vw;
-  background-color: red;
   position: fixed;
   margin-top: 65px;
   top: 0;

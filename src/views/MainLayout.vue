@@ -32,6 +32,7 @@ export default {
   background-attachment: fixed;
   background-size: cover;
 }
+
 .content {
   height: 90%;
 }

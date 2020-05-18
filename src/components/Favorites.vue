@@ -1,103 +1,74 @@
 <template>
-  <v-container pa-0 fill-height>
-    <v-container pa-0>
-      <v-row no-gutters>
-        <v-col>
-          <v-card
-            class="pa-0 text-center headline"
-            elevation="0"
-            color="#ebebeb"
-            outlined
-            tile
+  <v-container class="main fill-height" fluid>
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <v-card class="card pa-8" elevation="12">
+          <v-container
+            v-if="formations.length !== 0"
+            class="pitch pa-0"
+            fill-height
           >
-            AM
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-card
-            class="pa-0 text-center title"
-            elevation="0"
-            color="#b3b3b3"
-            outlined
-            tile
-          >
-            Popularity
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card
-            class="pa-0 text-center title"
-            elevation="0"
-            color="#b3b3b3"
-            outlined
-            tile
-          >
-            Value
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card
-            class="pa-0 text-center title"
-            elevation="0"
-            color="#b3b3b3"
-            outlined
-            tile
-          >
-            Age
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-layout>
-      <v-expansion-panels
-        class="d-block"
-        multiple
-        :value="openedPanels"
-        tile
-        readonly
-      >
-        <v-container>
-          <v-row>
-            <v-col
-              cols="12"
-              sm="6"
-              md="3"
-              v-for="player in players"
-              :key="player.name"
-            >
-              <Player :player="player" />
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-expansion-panels>
-    </v-layout>
+            <PitchPlayer
+              @open-popup="openPopup(formation.id, formation.name)"
+              v-for="formation in formations"
+              :key="formation.id"
+              :positionName="formation.name"
+              :positionId="formation.id"
+              :style="setPosition(formation.id)"
+            />
+          </v-container>
+        </v-card>
+      </v-col>
+    </v-row>
+    <PossiblePlayersPopup @close-popup="visible = false" :popup-data="popupData" v-if="visible" />
   </v-container>
 </template>
 
 <script>
-import Player from "@/components/Player.vue";
+import PitchPlayer from "@/components/PitchPlayer";
+import PossiblePlayersPopup from "@/components/PossiblePlayersPopup";
 
 export default {
   name: "Favorites",
   components: {
-    Player
+    PitchPlayer,
+    PossiblePlayersPopup
   },
   data: () => ({
-    positions: [{ name: "GK", players: 2, isFavorite: true, color: "#54688e" }]
+    visible: false,
+    popupData: {}
   }),
   computed: {
-    players() {
-      return this.$store.getters.players;
+    formations() {
+      return this.$store.getters.formations;
+    }
+  },
+  methods: {
+    setPosition(n) {
+      return `bottom: ${this.formations[n].bottom}; 
+              left: ${this.formations[n].left}`;
     },
-    openedPanels() {
-      let opened = [];
-      for (let i = 0; i < this.players.length; i++) {
-        opened.push(i);
-      }
-      return opened;
+    openPopup(positionId, positionName) {
+      this.visible = true;
+      this.popupData = {positionId, positionName}
     }
   }
 };
 </script>
+
+<style>
+.card {
+  height: 510px;
+  background: url("../assets/football-pitch1.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.main {
+  height: 90vh;
+}
+
+.pitch {
+  position: relative;
+}
+</style>

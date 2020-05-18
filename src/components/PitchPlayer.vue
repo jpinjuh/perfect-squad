@@ -3,11 +3,11 @@
     id="position-circle"
     @click="
       $emit('open-popup');
-      openPopUp($event);
+      setItem(positionId);
     "
   >
     <v-card
-      v-if="isFavoriteExists"
+      v-if="!!player"
       elevation="0"
       class="d-flex align-center justify-center"
       id="popover"
@@ -15,12 +15,19 @@
       <v-container pa-0>
         <v-row class="ma-0">
           <v-col class="pa-0 d-flex justify-center">
-            <img @click="openPopUp($event)" class="player-img" :src="link" />
+            <img
+              @click="
+                setItem(positionId);
+                $emit('open-popup');
+              "
+              class="player-img"
+              :src="player.formationPicture"
+            />
           </v-col>
         </v-row>
         <v-row class="ma-0">
           <v-col class="pa-0 d-flex justify-center">
-            <v-card class="pa-0 body-2">Luka Modrić</v-card>
+            <v-card class="pa-0 body-2">{{ player.lastName || player.name }}</v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -30,23 +37,26 @@
 
 <script>
 export default {
-  name: "Home",
+  name: "PitchPlayer",
   components: {},
   data: () => ({
     link:
       "https://www.fifaindex.com/static/FIFA20/images/players/10/177003.webp",
     dialog: false,
-    isFavoriteExists: false
+    favoritePlayer: {}
   }),
-  methods: {
-    openPopUp(e) {
-      // na hover prikazati sliku koju preko props posaljem iz Home i bindat je za :src
-      e.preventDefault();
-      e.stopPropagation();
-      console.log(e.target.tagName);
-      // na klik dispatch action koja ce pretražiti na osnovu name (pozicija npr. 'CB') sve igrače za tu poziciju i vratiti niz
+  computed: {
+    player() {
+      return this.$store.getters.getFavorite(this.positionId);
     }
-  }
+  },
+  methods: {
+    setItem() {
+      localStorage.setItem("positionName", this.positionName);
+      localStorage.setItem("positionId", this.positionId);
+    }
+  },
+  props: ["positionName", "positionId"]
 };
 </script>
 

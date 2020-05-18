@@ -8,8 +8,8 @@
       >
         <v-row class="ma-0" fluid align="center">
           <v-col class="pa-0 d-flex ">
-            <v-btn @click="method1()" icon>
-              <v-icon>mdi-heart</v-icon>
+            <v-btn @click="favoritize(player)" icon>
+              <v-icon :color="favorite ? 'red' : ''">mdi-heart</v-icon>
             </v-btn>
           </v-col>
           <v-col cols="6" class="pa-0">
@@ -63,11 +63,21 @@ export default {
     dialog: false
   }),
   methods: {
-    method1() {
-      console.log("something");
+    favoritize(player) {
+      localStorage.setItem("favoritized", true);
+
+      const positionId = localStorage.getItem("positionId"),
+        formationType = localStorage.getItem("formationType");
+
+      if (!this.favorite) {
+        this.$store.dispatch("addFavorite", {positionId, player, formationType});
+      } else {
+        console.log("remove");
+        this.$store.dispatch("removeFavorite", {positionId, player, formationType});
+      }
     }
   },
-  props: ["player", "color"]
+  props: ["player", "color", "favorite"]
 };
 </script>
 

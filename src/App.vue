@@ -17,7 +17,7 @@ export default {
     //
   }),
   created() {
-    this.$store.dispatch("getPlayers");
+    this.$store.dispatch("fetchData");
   }
 };
 </script>

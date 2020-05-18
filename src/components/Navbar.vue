@@ -9,33 +9,26 @@
           <v-spacer></v-spacer>
           <v-toolbar-items class="hidden-sm-and-down">
             <v-btn class="text-capitalize mr-4" text to="/">
-              Home
-            </v-btn>
-            <v-btn class="text-capitalize mr-4" text to="/players">
               Players
             </v-btn>
             <v-btn class="text-capitalize mr-4" text to="/favorites">
               Favorites
             </v-btn>
-            <v-col class="text-center subtitle-2">
+            <v-col class="d-flex align-center text-center subtitle-2">
               Formation:
             </v-col>
-            <v-menu offset-y>
-              <template v-slot:activator="{ on }">
-                <v-btn class="text-capitalize" dark v-on="on">
-                  None selected
-                </v-btn>
-              </template>
-              <v-list dark>
-                <v-list-item
-                  v-for="(formation, index) in formations"
-                  :key="index"
-                  @click="sendData(formation)"
-                >
-                  <v-list-item-title>{{ formation.name }}</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+            <v-select
+              :items="types"
+              label="None selected"
+              :value="types"
+              single-line
+              hide-details
+              @change="selected($event)"
+              dense
+              height="40"
+              flat
+              append-icon=""
+            ></v-select>
           </v-toolbar-items>
         </v-row>
       </v-container>
@@ -44,20 +37,35 @@
 </template>
 
 <script>
-import pitchPositions from "@/pitchPositions.js";
-console.log(pitchPositions);
+import { formationTypes } from "@/utils/pitchPositions.js";
+
 export default {
   data: () => ({
-    formations: pitchPositions
+    types: formationTypes
   }),
   methods: {
-    sendData(formation) {
-      console.log(formation.name);
-      if (this.$route.path !== "/") {
-        this.$router.push("/");
+    selected(formationType) {
+      this.$store.dispatch("changeFormation", formationType);
+      localStorage.setItem("formationType", formationType);
+
+      if (this.$route.path !== "/favorites") {
+        this.$router.push("/favorites");
       }
-      this.$store.dispatch("getFormation", formation);
     }
   }
 };
 </script>
+
+<style>
+.v-text-field.v-text-field--solo.v-input--dense > .v-input__control {
+  height: 0px;
+}
+
+.theme--dark.v-text-field > .v-input__control > .v-input__slot:before {
+  border: none;
+}
+
+.v-input__slot {
+  max-width: 120px;
+}
+</style>
