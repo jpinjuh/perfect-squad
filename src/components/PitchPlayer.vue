@@ -3,7 +3,7 @@
     id="position-circle"
     @click="
       $emit('open-popup');
-      setItem(positionId);
+      setItem();
     "
   >
     <v-card
@@ -17,7 +17,7 @@
           <v-col class="pa-0 d-flex justify-center">
             <img
               @click="
-                setItem(positionId);
+                setItem();
                 $emit('open-popup');
               "
               class="player-img"
@@ -27,7 +27,9 @@
         </v-row>
         <v-row class="ma-0">
           <v-col class="pa-0 d-flex justify-center">
-            <v-card class="pa-0 body-2">{{ player.lastName || player.name }}</v-card>
+            <v-card class="pa-1 body-2 text-no-wrap">{{
+              player.lastName || player.name
+            }}</v-card>
           </v-col>
         </v-row>
       </v-container>
@@ -40,9 +42,6 @@ export default {
   name: "PitchPlayer",
   components: {},
   data: () => ({
-    link:
-      "https://www.fifaindex.com/static/FIFA20/images/players/10/177003.webp",
-    dialog: false,
     favoritePlayer: {}
   }),
   computed: {
@@ -75,8 +74,6 @@ export default {
   background-color: transparent;
   top: 50%;
   left: 50%;
-  width: 100px;
-  height: 130px;
   max-width: 1000px;
   transform: translate(-50%, -50%);
 }

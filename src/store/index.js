@@ -74,10 +74,10 @@ export default new Vuex.Store({
         state.players[i].id = i;
       });
     },
-    setFavourites(state, favorites) {
-              state.favorites = favorites;
-              console.log(favorites);
-              console.log(state.favorites['4-4-2']);
+    setFavorites(state, favorites) {
+      state.favorites = favorites;
+      console.log(favorites);
+      console.log(state.favorites["4-4-2"]);
     },
     changeFormation(state, formationType) {
       state.formationType = formationType;
@@ -87,30 +87,32 @@ export default new Vuex.Store({
       }
     },
     addFavorite: function(state, { positionId, player, formationType }) {
-      if(state.favorites[formationType]) {
-        const exists = Object.keys(state.favorites[formationType]).some(positionId => {
-          return state.favorites[formationType][positionId].id === player.id;
-        });
+      if (state.favorites[formationType]) {
+        const exists = Object.keys(state.favorites[formationType]).some(
+          positionId => {
+            return state.favorites[formationType][positionId].id === player.id;
+          }
+        );
 
-        if(!exists)
+        if (!exists)
           Vue.set(state.favorites[formationType], positionId, player);
       } else {
-          Vue.set(state.favorites, formationType, {[positionId]: player});
+        Vue.set(state.favorites, formationType, { [positionId]: player });
       }
-      console.log(state.favorites)
+      console.log(state.favorites);
     },
     removeFavorite: function(state, { positionId, player, formationType }) {
       delete state.favorites[formationType][positionId];
       Vue.set(state.favorites);
-      console.log(player)
+      console.log(player);
     }
   },
   actions: {
     changeFormation({ commit }, formationType) {
       commit("changeFormation", formationType);
     },
-    addFavorite({ commit }, { positionId, player, formationType}) {
-        console.log("dodaj", positionId, player, formationType);
+    addFavorite({ commit }, { positionId, player, formationType }) {
+      console.log("dodaj", positionId, player, formationType);
       db.collection("users")
         .doc(localStorage.getItem("userId"))
         .update({
@@ -121,12 +123,14 @@ export default new Vuex.Store({
         });
     },
     removeFavorite({ commit }, { positionId, player, formationType }) {
-      db.collection("users").doc(localStorage.getItem('userId')).update({
-        [`${formationType}.${positionId}`]: firebase.firestore.FieldValue.delete()
-      })
-      .then(function() {
-        commit("removeFavorite", { positionId, player, formationType });
-      });
+      db.collection("users")
+        .doc(localStorage.getItem("userId"))
+        .update({
+          [`${formationType}.${positionId}`]: firebase.firestore.FieldValue.delete()
+        })
+        .then(function() {
+          commit("removeFavorite", { positionId, player, formationType });
+        });
     },
     fetchData({ commit }) {
       axios({
@@ -142,10 +146,9 @@ export default new Vuex.Store({
           .get()
           .then(function(doc) {
             if (doc.exists) {
-                commit("setFavourites", doc.data());
+              commit("setFavorites", doc.data());
             } else {
-                commit("setFavourites", []);
-              // doc.data() will be undefined in this case
+              commit("setFavorites", []);
               console.log("No such document!");
             }
           })
@@ -159,11 +162,6 @@ export default new Vuex.Store({
             .toString(36)
             .substr(2, 9);
 
-        db.collection("users")
-          .doc(userId)
-          .set({
-            formations: []
-          });
         localStorage.setItem("userId", userId);
       }
     }

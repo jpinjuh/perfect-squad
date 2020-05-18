@@ -170,7 +170,6 @@ export default {
   name: "PlayerDetails",
   components: {},
   data: () => ({
-    dialog: false,
     player: [],
     playerSkillKeys: [],
     playerSkills: [],

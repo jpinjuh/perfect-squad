@@ -10,7 +10,7 @@
             outlined
             tile
           >
-            AM
+            {{ popupData.positionName }}
           </v-card>
         </v-col>
       </v-row>
@@ -96,16 +96,18 @@ export default {
     //
   }),
   methods: {
-    isFavorite(id){
-      if(this.favorite){
-        return this.favorite.id === id
+    isFavorite(id) {
+      if (this.favorite) {
+        return this.favorite.id === id;
       }
       return false;
     }
   },
   computed: {
     players() {
-      return this.$store.getters.getByPitchPosition(this.popupData.positionName);
+      return this.$store.getters.getByPitchPosition(
+        this.popupData.positionName
+      );
     },
     favorite() {
       return this.$store.getters.getFavorite(this.popupData.positionId);
@@ -119,7 +121,7 @@ export default {
       return opened;
     }
   },
-  props: ['popupData']
+  props: ["popupData"]
 };
 </script>
 

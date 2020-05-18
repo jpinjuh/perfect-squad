@@ -64,16 +64,21 @@ export default {
   }),
   methods: {
     favoritize(player) {
-      localStorage.setItem("favoritized", true);
-
       const positionId = localStorage.getItem("positionId"),
         formationType = localStorage.getItem("formationType");
 
       if (!this.favorite) {
-        this.$store.dispatch("addFavorite", {positionId, player, formationType});
+        this.$store.dispatch("addFavorite", {
+          positionId,
+          player,
+          formationType
+        });
       } else {
-        console.log("remove");
-        this.$store.dispatch("removeFavorite", {positionId, player, formationType});
+        this.$store.dispatch("removeFavorite", {
+          positionId,
+          player,
+          formationType
+        });
       }
     }
   },

@@ -20,7 +20,11 @@
         </v-card>
       </v-col>
     </v-row>
-    <PossiblePlayersPopup @close-popup="visible = false" :popup-data="popupData" v-if="visible" />
+    <PossiblePlayersPopup
+      @close-popup="visible = false"
+      :popup-data="popupData"
+      v-if="visible"
+    />
   </v-container>
 </template>
 
@@ -50,7 +54,7 @@ export default {
     },
     openPopup(positionId, positionName) {
       this.visible = true;
-      this.popupData = {positionId, positionName}
+      this.popupData = { positionId, positionName };
     }
   }
 };
