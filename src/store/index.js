@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import { getPitchFormation } from "@/utils/pitchPositions.js";
+import { calculatePopularity, calculateAge } from "@/utils/helperFunctions.js";
 import firebase from "firebase";
 
 Vue.use(Vuex);
@@ -24,7 +25,8 @@ export default new Vuex.Store({
     players: [],
     formations: [],
     favorites: [],
-    formationType: ""
+    formationType: "",
+    isFavoriteSelected: false
   },
   getters: {
     players: state => state.players,
@@ -72,6 +74,11 @@ export default new Vuex.Store({
       response.forEach((player, i) => {
         state.players.push(player);
         state.players[i].id = i;
+
+        state.players[i].age = calculateAge(state.players[i].stats.birthDate);
+        state.players[i].popularity = calculatePopularity(
+          state.players[i].playerSkills
+        );
       });
     },
     setFavorites(state, favorites) {
@@ -80,38 +87,53 @@ export default new Vuex.Store({
       console.log(state.favorites["4-4-2"]);
     },
     changeFormation(state, formationType) {
-      state.formationType = formationType;
       const formation = getPitchFormation(formationType);
       if (formation) {
         state.formations = formation;
       }
     },
+    changeFormationType(state, formationType) {
+      state.formationType = formationType;
+    },
     addFavorite: function(state, { positionId, player, formationType }) {
       if (state.favorites[formationType]) {
-        const exists = Object.keys(state.favorites[formationType]).some(
+        /* const exists = Object.keys(state.favorites[formationType]).some(
           positionId => {
             return state.favorites[formationType][positionId].id === player.id;
           }
         );
 
-        if (!exists)
-          Vue.set(state.favorites[formationType], positionId, player);
+        if (!exists) */
+        Vue.set(state.favorites[formationType], positionId, player);
       } else {
         Vue.set(state.favorites, formationType, { [positionId]: player });
       }
+
       console.log(state.favorites);
     },
     removeFavorite: function(state, { positionId, player, formationType }) {
-      delete state.favorites[formationType][positionId];
-      Vue.set(state.favorites);
+      if (state.favorites[formationType]) {
+        Vue.delete(state.favorites[formationType], positionId);
+      }
+      console.log(state.favorites);
       console.log(player);
+    },
+    updateIsFavoriteSelected(state) {
+      state.isFavoriteSelected = true;
+    },
+    notFavoriteSelected(state) {
+      state.isFavoriteSelected = false;
     }
   },
   actions: {
-    changeFormation({ commit }, formationType) {
+    changeFormation({ commit, dispatch }, formationType) {
       commit("changeFormation", formationType);
+      dispatch("changeFormationType", formationType);
     },
-    addFavorite({ commit }, { positionId, player, formationType }) {
+    changeFormationType({ commit }, formationType) {
+      commit("changeFormationType", formationType);
+    },
+    addFavorite({ commit, dispatch }, { positionId, player, formationType }) {
       console.log("dodaj", positionId, player, formationType);
       db.collection("users")
         .doc(localStorage.getItem("userId"))
@@ -120,6 +142,7 @@ export default new Vuex.Store({
         })
         .then(function() {
           commit("addFavorite", { positionId, player, formationType });
+          dispatch("notFavoriteSelected");
         });
     },
     removeFavorite({ commit }, { positionId, player, formationType }) {
@@ -161,9 +184,20 @@ export default new Vuex.Store({
           Math.random()
             .toString(36)
             .substr(2, 9);
+        db.collection("users")
+          .doc(userId)
+          .set({
+            "4-4-2": {}
+          });
 
         localStorage.setItem("userId", userId);
       }
+    },
+    updateIsFavoriteSelected({ commit }) {
+      commit("updateIsFavoriteSelected");
+    },
+    notFavoriteSelected({ commit }) {
+      commit("notFavoriteSelected");
     }
   },
   modules: {}

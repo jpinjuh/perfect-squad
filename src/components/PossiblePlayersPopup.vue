@@ -4,7 +4,7 @@
       <v-row no-gutters>
         <v-col>
           <v-card
-            class="pa-0 text-center headline"
+            class="pa-1 text-center headline"
             elevation="0"
             color="#ebebeb"
             outlined
@@ -14,51 +14,27 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row no-gutters>
-        <v-col>
-          <v-card
-            class="pa-0 text-center title"
-            elevation="0"
-            color="#b3b3b3"
-            outlined
-            tile
-          >
-            Popularity
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card
-            class="pa-0 text-center title"
-            elevation="0"
-            color="#b3b3b3"
-            outlined
-            tile
-          >
-            Value
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card
-            class="pa-0 text-center title"
-            elevation="0"
-            color="#b3b3b3"
-            outlined
-            tile
-          >
-            Age
-          </v-card>
-        </v-col>
-      </v-row>
+      <v-tabs hide-slider grow background-color="#b3b3b3">
+        <v-tab @click="sortValue = 1" class="title">
+          Popularity
+        </v-tab>
+        <v-tab @click="sortValue = 2" class="title">
+          Value
+        </v-tab>
+        <v-tab @click="sortValue = 3" class="title">
+          Age
+        </v-tab>
+      </v-tabs>
     </div>
     <v-layout>
       <v-expansion-panels multiple :value="openedPanels" tile readonly>
-        <v-container>
+        <v-container pt-12>
           <v-row>
             <v-col
               cols="12"
               sm="6"
               md="3"
-              v-for="player in players"
+              v-for="player in sortPlayers(sortValue)"
               :key="player.id"
             >
               <Player :player="player" :favorite="isFavorite(player.id)" />
@@ -67,8 +43,8 @@
         </v-container>
       </v-expansion-panels>
     </v-layout>
-    <div></div>
-    <v-btn
+    <div class="pt-8"></div>
+    <!-- <v-btn
       color="#b3b3b3"
       dark
       fixed
@@ -79,7 +55,7 @@
       @click="$emit('close-popup')"
     >
       <v-icon>mdi-close</v-icon>
-    </v-btn>
+    </v-btn> -->
   </div>
 </template>
 
@@ -91,9 +67,8 @@ export default {
   components: {
     Player
   },
-
   data: () => ({
-    //
+    sortValue: 1
   }),
   methods: {
     isFavorite(id) {
@@ -101,6 +76,40 @@ export default {
         return this.favorite.id === id;
       }
       return false;
+    },
+    sortPlayers(sortValue) {
+      switch (sortValue) {
+        case 1:
+          return this.sortByPopularity();
+        case 2:
+          return this.sortByValue();
+        case 3:
+          return this.sortByAge();
+        default:
+          console.log("Sorting failed!");
+          break;
+      }
+    },
+    sortByPopularity() {
+      const sortedArray = this.players.sort((a, b) => {
+        return b.popularity - a.popularity;
+      });
+
+      return sortedArray;
+    },
+    sortByValue() {
+      const sortedArray = this.players.sort((a, b) => {
+        return ("" + b.stats.value).localeCompare(a.stats.value);
+      });
+
+      return sortedArray;
+    },
+    sortByAge() {
+      const sortedArray = this.players.sort((a, b) => {
+        return b.age - a.age;
+      });
+
+      return sortedArray;
     }
   },
   computed: {
@@ -134,7 +143,7 @@ export default {
   background-size: cover;
   width: 100vw;
   position: fixed;
-  margin-top: 65px;
+  margin-top: 55px;
   top: 0;
   right: 0;
   bottom: 0;

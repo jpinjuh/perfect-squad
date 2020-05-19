@@ -23,7 +23,7 @@
     <PossiblePlayersPopup
       @close-popup="visible = false"
       :popup-data="popupData"
-      v-if="visible"
+      v-if="isSelected"
     />
   </v-container>
 </template>
@@ -45,6 +45,9 @@ export default {
   computed: {
     formations() {
       return this.$store.getters.formations;
+    },
+    isSelected() {
+      return this.$store.state.isFavoriteSelected;
     }
   },
   methods: {
@@ -54,6 +57,7 @@ export default {
     },
     openPopup(positionId, positionName) {
       this.visible = true;
+      this.$store.dispatch("updateIsFavoriteSelected");
       this.popupData = { positionId, positionName };
     }
   }

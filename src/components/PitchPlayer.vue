@@ -42,7 +42,7 @@ export default {
   name: "PitchPlayer",
   components: {},
   data: () => ({
-    favoritePlayer: {}
+    //
   }),
   computed: {
     player() {
@@ -80,8 +80,8 @@ export default {
 
 .player-img {
   background-position: center;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   background-size: cover;
   background-color: #b3b3b3;

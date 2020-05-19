@@ -32,7 +32,7 @@
                 <v-col cols="12" md="6" class="d-flex justify-end pr-0">
                   <span>
                     <v-rating
-                      v-model="getPopularity"
+                      v-model="player.popularity"
                       background-color="#b3b3b3"
                       color="yellow darken-3"
                       dense
@@ -75,7 +75,7 @@
                   <span>Age</span>
                 </v-col>
                 <v-col class="pa-0 d-flex justify-end">
-                  <span>{{ getAge(stats.birthDate) }}</span>
+                  <span>{{ player.age }}</span>
                 </v-col>
               </v-row>
               <v-row class="ma-0 mb-3 d-flex align-center">
@@ -178,37 +178,12 @@ export default {
   methods: {
     bgImg(link) {
       return `background-image: url(${link});`;
-    },
-    getAge(dateString) {
-      const today = new Date();
-      const birthDate = new Date(dateString);
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const m = today.getMonth() - birthDate.getMonth();
-
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
-    }
-  },
-  computed: {
-    getPopularity() {
-      let popularitySum = 0,
-        counter = 0;
-
-      for (let prop in this.playerSkills) {
-        popularitySum += this.playerSkills[prop].popular;
-        counter++;
-      }
-
-      return popularitySum / counter;
     }
   },
   created() {
     this.player = this.$store.getters.getPlayer(this.id);
     this.playerSkillKeys = Object.keys(this.player.playerSkills);
     const { stats, playerSkills } = this.player;
-
     this.playerSkills = playerSkills;
     this.stats = stats;
   },
