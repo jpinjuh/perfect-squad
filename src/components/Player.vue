@@ -64,10 +64,10 @@ export default {
   }),
   methods: {
     favoritize(player) {
-      if(this.$route.path === '/favorites'){
+      if (this.$route.path === "/favorites") {
         const positionId = localStorage.getItem("positionId"),
           formationType = localStorage.getItem("formationType");
-        
+
         if (!this.favorite) {
           this.$store.dispatch("addFavorite", {
             positionId,
@@ -82,9 +82,9 @@ export default {
           });
         }
       } else {
-        console.log('Favorites only can be chosen on the pitch!');
+        console.log("Favorites only can be chosen on the pitch!");
       }
-    },
+    }
   },
   props: ["player", "color", "favorite"]
 };

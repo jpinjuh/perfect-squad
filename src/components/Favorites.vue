@@ -20,10 +20,7 @@
         </v-card>
       </v-col>
     </v-row>
-    <PossiblePlayersPopup
-      :popup-data="popupData"
-      v-if="isSelected"
-    />
+    <PossiblePlayersPopup :popup-data="popupData" v-if="isSelected" />
   </v-container>
 </template>
 

@@ -2,28 +2,40 @@
   <nav>
     <div class="meni" v-show="hamburgerMenu">
       <v-container class="d-flex flex-column">
-        <v-btn @click="closePopover()" color="white" class="text-capitalize font-weight-regular px-6" text to="/">
+        <v-btn
+          @click="closePopover()"
+          color="white"
+          class="text-capitalize font-weight-regular px-6"
+          text
+          to="/"
+        >
           Players
         </v-btn>
-        <v-btn @click="closePopover()" color="white" class="text-capitalize font-weight-regular px-6" text to="/favorites">
+        <v-btn
+          @click="closePopover()"
+          color="white"
+          class="text-capitalize font-weight-regular px-6"
+          text
+          to="/favorites"
+        >
           Favorites
         </v-btn>
         <v-layout>
           <v-row>
             <v-col cols="12" class="d-flex align-center justify-center">
               <div>
-              <span class="float-left mr-4">Formation:</span>
-              <v-select
-                :items="types"
-                label="None selected"
-                :value="types"
-                single-line
-                hide-details
-                @change="selected($event)"
-                dense
-                flat
-                append-icon=""
-              ></v-select>
+                <span class="float-left mr-4">Formation:</span>
+                <v-select
+                  :items="types"
+                  label="None selected"
+                  :value="types"
+                  single-line
+                  hide-details
+                  @change="selected($event)"
+                  dense
+                  flat
+                  append-icon=""
+                ></v-select>
               </div>
             </v-col>
           </v-row>
@@ -37,10 +49,20 @@
             <v-toolbar-title>Perfect Squad</v-toolbar-title>
           </v-col>
           <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn @click="closePopover()" class="text-capitalize font-weight-regular px-6" text to="/">
+            <v-btn
+              @click="closePopover()"
+              class="text-capitalize font-weight-regular px-6"
+              text
+              to="/"
+            >
               Players
             </v-btn>
-            <v-btn @click="closePopover()" class="text-capitalize font-weight-regular px-6" text to="/favorites">
+            <v-btn
+              @click="closePopover()"
+              class="text-capitalize font-weight-regular px-6"
+              text
+              to="/favorites"
+            >
               Favorites
             </v-btn>
             <v-col class="d-flex align-center text-center subtitle-2">
@@ -61,7 +83,9 @@
           </v-toolbar-items>
         </v-row>
       </v-container>
-      <v-btn class="d-md-none" @click="hamburgerMenu = !hamburgerMenu" icon><v-icon>mdi-menu</v-icon></v-btn>
+      <v-btn class="d-md-none" @click="hamburgerMenu = !hamburgerMenu" icon
+        ><v-icon>mdi-menu</v-icon></v-btn
+      >
     </v-toolbar>
   </nav>
 </template>
@@ -85,7 +109,7 @@ export default {
 
       this.closePopover();
     },
-    closePopover(){
+    closePopover() {
       this.$store.dispatch("notFavoriteSelected");
     }
   }
@@ -106,7 +130,7 @@ export default {
 }
 
 .theme--light.v-list {
-  background-color:#272727 !important;
+  background-color: #272727 !important;
 }
 
 .v-list-item__title {
@@ -120,7 +144,7 @@ export default {
 .meni {
   height: 150px;
   width: 100vw;
-  background-color:#272727;
+  background-color: #272727;
   position: fixed;
   color: white;
   z-index: 9999;
