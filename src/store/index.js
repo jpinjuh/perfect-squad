@@ -83,8 +83,6 @@ export default new Vuex.Store({
     },
     setFavorites(state, favorites) {
       state.favorites = favorites;
-      console.log(favorites);
-      console.log(state.favorites["4-4-2"]);
     },
     changeFormation(state, formationType) {
       const formation = getPitchFormation(formationType);
@@ -108,14 +106,11 @@ export default new Vuex.Store({
       } else {
         Vue.set(state.favorites, formationType, { [positionId]: player });
       }
-
-      console.log(state.favorites);
     },
     removeFavorite: function(state, { positionId, player, formationType }) {
       if (state.favorites[formationType]) {
         Vue.delete(state.favorites[formationType], positionId);
       }
-      console.log(state.favorites);
       console.log(player);
     },
     updateIsFavoriteSelected(state) {
@@ -134,7 +129,6 @@ export default new Vuex.Store({
       commit("changeFormationType", formationType);
     },
     addFavorite({ commit, dispatch }, { positionId, player, formationType }) {
-      console.log("dodaj", positionId, player, formationType);
       db.collection("users")
         .doc(localStorage.getItem("userId"))
         .update({

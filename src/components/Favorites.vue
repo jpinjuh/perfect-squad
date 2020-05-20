@@ -21,7 +21,6 @@
       </v-col>
     </v-row>
     <PossiblePlayersPopup
-      @close-popup="visible = false"
       :popup-data="popupData"
       v-if="isSelected"
     />
@@ -39,7 +38,6 @@ export default {
     PossiblePlayersPopup
   },
   data: () => ({
-    visible: false,
     popupData: {}
   }),
   computed: {
@@ -56,7 +54,6 @@ export default {
               left: ${this.formations[n].left}`;
     },
     openPopup(positionId, positionName) {
-      this.visible = true;
       this.$store.dispatch("updateIsFavoriteSelected");
       this.popupData = { positionId, positionName };
     }
@@ -67,9 +64,11 @@ export default {
 <style>
 .card {
   height: 510px;
-  background: url("../assets/football-pitch1.jpg");
+  background-image: url("../assets/football-pitch1.jpg");
   background-repeat: no-repeat;
   background-size: 100% 100%;
+  background-position: center;
+  image-orientation: 0deg;
 }
 
 .main {

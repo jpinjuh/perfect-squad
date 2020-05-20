@@ -2,10 +2,10 @@
   <nav>
     <div class="meni" v-show="hamburgerMenu">
       <v-container class="d-flex flex-column">
-        <v-btn color="white" class="text-capitalize font-weight-regular px-6" text to="/">
+        <v-btn @click="closePopover()" color="white" class="text-capitalize font-weight-regular px-6" text to="/">
           Players
         </v-btn>
-        <v-btn color="white" class="text-capitalize font-weight-regular px-6" text to="/favorites">
+        <v-btn @click="closePopover()" color="white" class="text-capitalize font-weight-regular px-6" text to="/favorites">
           Favorites
         </v-btn>
         <v-layout>
@@ -37,10 +37,10 @@
             <v-toolbar-title>Perfect Squad</v-toolbar-title>
           </v-col>
           <v-toolbar-items class="hidden-sm-and-down">
-            <v-btn class="text-capitalize font-weight-regular px-6" text to="/">
+            <v-btn @click="closePopover()" class="text-capitalize font-weight-regular px-6" text to="/">
               Players
             </v-btn>
-            <v-btn class="text-capitalize font-weight-regular px-6" text to="/favorites">
+            <v-btn @click="closePopover()" class="text-capitalize font-weight-regular px-6" text to="/favorites">
               Favorites
             </v-btn>
             <v-col class="d-flex align-center text-center subtitle-2">
@@ -72,11 +72,7 @@ import { formationTypes } from "@/utils/pitchPositions.js";
 export default {
   data: () => ({
     types: formationTypes,
-    hamburgerMenu: false,
-    menuItems: [
-      { title: 'Players', link: '/' },
-      { title: 'Favorites', link: '/favorites' },
-    ]
+    hamburgerMenu: false
   }),
   methods: {
     selected(formationType) {
@@ -86,6 +82,11 @@ export default {
       if (this.$route.path !== "/favorites") {
         this.$router.push("/favorites");
       }
+
+      this.closePopover();
+    },
+    closePopover(){
+      this.$store.dispatch("notFavoriteSelected");
     }
   }
 };
@@ -123,6 +124,6 @@ export default {
   position: fixed;
   color: white;
   z-index: 9999;
-  top: 50px;
+  top: 55px;
 }
 </style>

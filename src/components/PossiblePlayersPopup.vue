@@ -99,7 +99,9 @@ export default {
     },
     sortByValue() {
       const sortedArray = this.players.sort((a, b) => {
-        return ("" + b.stats.value).localeCompare(a.stats.value);
+        a = parseInt(a.stats.value.replace(/[ €.]/g, ""));
+        b = parseInt(b.stats.value.replace(/[ €.]/g, ""));
+        return b - a;
       });
 
       return sortedArray;

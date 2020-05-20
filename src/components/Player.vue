@@ -64,23 +64,27 @@ export default {
   }),
   methods: {
     favoritize(player) {
-      const positionId = localStorage.getItem("positionId"),
-        formationType = localStorage.getItem("formationType");
-
-      if (!this.favorite) {
-        this.$store.dispatch("addFavorite", {
-          positionId,
-          player,
-          formationType
-        });
+      if(this.$route.path === '/favorites'){
+        const positionId = localStorage.getItem("positionId"),
+          formationType = localStorage.getItem("formationType");
+        
+        if (!this.favorite) {
+          this.$store.dispatch("addFavorite", {
+            positionId,
+            player,
+            formationType
+          });
+        } else {
+          this.$store.dispatch("removeFavorite", {
+            positionId,
+            player,
+            formationType
+          });
+        }
       } else {
-        this.$store.dispatch("removeFavorite", {
-          positionId,
-          player,
-          formationType
-        });
+        console.log('Favorites only can be chosen on the pitch!');
       }
-    }
+    },
   },
   props: ["player", "color", "favorite"]
 };
