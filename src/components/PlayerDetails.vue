@@ -10,7 +10,7 @@
           </v-col>
         </v-row>
         <v-row class="ma-0">
-          <v-col cols="12" lg="6">
+          <v-col cols="12" lg="6" class="player-info-left">
             <v-container pb-0>
               <v-row class="ma-0 mb-3">
                 <v-col>
@@ -113,7 +113,7 @@
             </v-container>
           </v-col>
           <!-- <v-divider color="brown" vertical></v-divider> -->
-          <v-col border="left" cols="12" lg="6" class="pt-0">
+          <v-col cols="12" lg="6">
             <v-container
               style="max-height: 484px"
               class="overflow-y-auto"
@@ -223,5 +223,16 @@ export default {
 
 #scrollbar::-webkit-scrollbar-thumb {
   background-color: #795548;
+}
+
+.player-info-left {
+  border-right: 1px solid #795548;
+}
+
+@media screen and (max-width: 1264px) {
+  .player-info-left {
+    border-right: none;
+    border-bottom: 1px solid #795548;
+  }
 }
 </style>
